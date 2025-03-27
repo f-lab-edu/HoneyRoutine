@@ -27,3 +27,63 @@ iOS Pomodoro &amp; Routine App with SwiftUI and Combine.
 - [피그마 디자인 문서](https://www.figma.com/design/brJLUMcaCD3115jvg6KQ9M/HoneyRoutine?node-id=0-1&t=KYYdk14TlM1iP6Rc-1) 
 - [피그마 유저 플로우 문서](https://www.figma.com/board/lZwOMVJyVZJ67qzs2XEz0M/HoneyRoutine-Planning?node-id=0-1&t=Bmst8jYcrnBnprfd-1)
 ---
+
+## 6. Pomodoro Timer 설계 다이어그램
+
+```mermaid
+graph TD;
+  subgraph Presentation Layer
+    TimerView["🖼 TimerView (SwiftUI)"]
+    TimerViewModel["⚙️ TimerViewModel (Combine)
+    - startTimer()
+    - stopTimer()
+    - resetTimer()
+    - updateRemainingTime()
+    - bindToUseCase()"]
+    TimerVC["📱 TimerViewController (Optional)"]
+  end
+
+  subgraph Domain Layer
+    TimerUseCase["🛠 TimerUseCase
+    - startTimer(duration: Int)
+    - stopTimer()
+    - resetTimer()
+    - getCurrentTimer() -> TimerEntity?
+    - updateRemainingTime(time: Int)"]
+    
+    TimerRepositoryProtocol["🔌 TimerRepositoryProtocol
+    - saveTimer(_ timer: TimerEntity)
+    - loadTimer() -> TimerEntity?
+    - clearTimer()"]
+    
+    TimerEntity["🗂 TimerEntity
+    - duration: Int
+    - remainingTime: Int
+    - isRunning: Bool"]
+    
+    TimerProtocol["⏳ TimerProtocol
+    - start(duration: Int)
+    - stop()
+    - reset()
+    - remainingTimerObservable: Observable<Int> (Combine 문법으로 변경 필요)"]
+  end
+
+  subgraph Data Layer
+    TimerRepository["💾 TimerRepository
+    - saveTimer(_ timer: TimerEntity)
+    - loadTimer() -> TimerEntity?
+    - clearTimer()"]
+    
+    TimerLocalDataBase["📂 TimerLocalDataBase
+    - saveTimer(_ timer: TimerEntity)
+    - loadTimer() -> TimerEntity?
+    - clearTimer()"]
+  end
+
+  %% 연결 관계 설정
+  TimerView -->|데이터 바인딩| TimerViewModel
+  TimerViewModel -->|UseCase 호출| TimerUseCase
+  TimerUseCase -->|타이머 동작| TimerProtocol
+  TimerUseCase -->|데이터 저장/불러오기| TimerRepositoryProtocol
+  TimerRepositoryProtocol -->|실제 구현| TimerRepository
+  TimerRepository -->|데이터 저장/로드| TimerLocalDataBase
