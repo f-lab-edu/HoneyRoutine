@@ -16,7 +16,8 @@ public extension Project {
         infoPlists: [ModuleTarget: InfoPlist] = [:],
         resources: [ModuleTarget: ResourceFileElements] = [:],
         scripts: [ModuleTarget: [TargetScript]] = [:],
-        settings: [ModuleTarget: Settings] = [:]
+        settings: [ModuleTarget: Settings] = [:],
+        schemes: [Scheme] = []
     ) -> Project {
         let baseBundleId = "com.beepeach.honeyroutine.\(moduleLayer).\(name.lowercased())"
 
@@ -25,6 +26,7 @@ public extension Project {
                 name: "\(name)\(targetType.nameSuffix)",
                 destinations: .iOS,
                 product: targetType.product,
+                productName: targetType.productName(for: name),
                 bundleId: "\(baseBundleId).\(targetType.nameSuffix.lowercased())",
                 deploymentTargets: .iOS("17.0"),
                 infoPlist: infoPlists[targetType] ?? .default,
@@ -36,6 +38,6 @@ public extension Project {
             )
         }
 
-        return Project(name: name, targets: projectTargets)
+        return Project(name: name, targets: projectTargets, schemes: schemes)
     }
 }
