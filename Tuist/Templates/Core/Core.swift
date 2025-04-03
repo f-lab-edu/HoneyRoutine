@@ -30,10 +30,6 @@ let coreTemplate = Template(
         .file(
             path: "Core/{{ name }}/Tests/Testing/{{ name }}Testing.swift",
             templatePath: "CoreModuleFile.swift"
-        ),
-        .file(
-            path: "Core/{{ name }}/scripts/create_structure.sh",
-            templatePath: "scripts/create_structure.sh"
         )
     ]
 )
