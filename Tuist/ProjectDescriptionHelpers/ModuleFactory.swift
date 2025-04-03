@@ -28,7 +28,7 @@ public extension Project {
                 product: targetType.product,
                 productName: targetType.productName(for: name),
                 bundleId: "\(baseBundleId).\(targetType.nameSuffix.lowercased())",
-                deploymentTargets: .iOS("17.0"),
+                deploymentTargets: HoneyRoutineModule.minimumDeploymentTarget,
                 infoPlist: infoPlists[targetType] ?? .default,
                 sources: targetType.sources,
                 resources: resources[targetType],
