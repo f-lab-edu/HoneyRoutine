@@ -1,34 +1,38 @@
 import ProjectDescription
+import ProjectDescriptionHelpers
 
-let project = Project(
+let project = Project.makeModule(
     name: "HoneyRoutine",
+    moduleLayer: .app,
     targets: [
-        .target(
-            name: "HoneyRoutine",
-            destinations: .iOS,
-            product: .app,
-            bundleId: "com.BeePeach.HoneyRoutine",
-            infoPlist: .extendingDefault(
-                with: [
-                    "UILaunchScreen": [
-                        "UIColorName": "",
-                        "UIImageName": "",
-                    ],
-                ]
-            ),
-            sources: ["Sources/**"],
-            resources: ["Resources/**"],
-            dependencies: []
-        ),
-        .target(
-            name: "HoneyRoutineTests",
-            destinations: .iOS,
-            product: .unitTests,
-            bundleId: "com.BeePeach.HoneyRoutineTests",
-            infoPlist: .default,
-            sources: ["Tests/**"],
-            resources: [],
-            dependencies: [.target(name: "HoneyRoutine")]
-        ),
+        .app
+    ],
+    dependencies: [
+        .implementation: []
+    ],
+    infoPlists: [
+        .implementation: .file(path: Path(stringLiteral: HoneyRoutineModule.Paths.infoPlist))
+    ],
+    resources: [
+        .implementation: ResourceFileElements(stringLiteral: HoneyRoutineModule.Paths.resources)
+    ],
+    settings: [
+        .implementation: .settings(
+            configurations: [
+                .debug(
+                    name: "Debug",
+                    xcconfig: .relativeToRoot(HoneyRoutineModule.Paths.debugXCConfig)
+                ),
+                .release(
+                    name: "Release",
+                    xcconfig: .relativeToRoot(HoneyRoutineModule.Paths.releaseXCConfig)
+                )
+            ],
+            defaultSettings: .recommended
+        )
+    ],
+    schemes: [
+        SchemeFactory.makeDev(name: "HoneyRoutine", mainTarget: "HoneyRoutine"),
+        SchemeFactory.makeRelease(name: "HoneyRoutine", mainTarget: "HoneyRoutine")
     ]
 )
