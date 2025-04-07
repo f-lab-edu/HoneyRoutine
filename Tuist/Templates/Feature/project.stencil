@@ -1,0 +1,31 @@
+//
+//  project.stencil
+//  Config
+//
+//  Created by JUNHEE JO on 4/1/25.
+//
+
+import ProjectDescription
+import ProjectDescriptionHelpers
+
+let project = Project.makeModule(
+    name: "{{ name }}",
+    moduleLayer: .feature,
+    targets: [
+        .interface,
+        .implementation,
+        .demo,
+        .tests,
+        .snapshotTests,
+        .testing
+    ],
+    resources: [
+        .implementation: "Resources/**",
+        .demo: "Resources/**"
+    ],
+    dependencies: [
+        .implementation: [.target(name: "{{ name }}Interface")],
+        .demo: [.target(name: "{{ name }}Implementation")],
+        .tests: [.target(name: "{{ name }}Implementation")]
+    ]
+)
