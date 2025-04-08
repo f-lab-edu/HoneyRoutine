@@ -34,10 +34,6 @@ let sharedTemplate = Template(
         .file(
             path: "Shared/{{ name }}/Tests/Testing/{{ name }}Testing.swift",
             templatePath: "SharedModuleFile.swift"
-        ),
-        .file(
-            path: "Shared/{{ name }}/scripts/create_structure.sh",
-            templatePath: "scripts/create_structure.sh"
         )
     ]
 )

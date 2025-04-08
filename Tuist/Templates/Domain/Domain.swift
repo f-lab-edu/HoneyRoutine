@@ -33,11 +33,6 @@ let domainTemplate = Template(
         .file(
             path: "Domain/{{ name }}/Tests/Testing/{{ name }}Testing.swift",
             templatePath: "DomainModuleFile.swift"
-        ),
-
-        .file(
-            path: "Domain/{{ name }}/scripts/create_structure.sh",
-            templatePath: "scripts/create_structure.sh"
         )
     ]
 )

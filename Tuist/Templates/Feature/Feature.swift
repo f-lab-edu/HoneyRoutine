@@ -42,10 +42,6 @@ let featureTemplate = Template(
         .file(
             path: "Feature/{{ name }}/Tests/Testing/{{ name }}Testing.swift",
             templatePath: "FeatureModuleFile.swift"
-        ),
-        .file(
-            path: "Feature/{{ name }}/scripts/create_structure.sh",
-            templatePath: "scripts/create_structure.sh"
         )
     ]
 )
