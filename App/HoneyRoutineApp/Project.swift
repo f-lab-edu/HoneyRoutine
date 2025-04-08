@@ -7,14 +7,14 @@ let project = Project.makeModule(
     targets: [
         .app
     ],
-    dependencies: [
-        .implementation: []
-    ],
     infoPlists: [
         .implementation: .file(path: Path(stringLiteral: HoneyRoutineModule.Paths.infoPlist))
     ],
     resources: [
         .implementation: ResourceFileElements(stringLiteral: HoneyRoutineModule.Paths.resources)
+    ],
+    dependencies: [
+        .implementation: []
     ],
     settings: [
         .implementation: .settings(

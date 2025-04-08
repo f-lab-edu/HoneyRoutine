@@ -12,10 +12,10 @@ public extension Project {
         name: String,
         moduleLayer: ModuleLayer,
         targets: [ModuleTarget],
-        dependencies: [ModuleTarget: [TargetDependency]] = [:],
         infoPlists: [ModuleTarget: InfoPlist] = [:],
         resources: [ModuleTarget: ResourceFileElements] = [:],
         scripts: [ModuleTarget: [TargetScript]] = [:],
+        dependencies: [ModuleTarget: [TargetDependency]] = [:],
         settings: [ModuleTarget: Settings] = [:],
         schemes: [Scheme] = []
     ) -> Project {
