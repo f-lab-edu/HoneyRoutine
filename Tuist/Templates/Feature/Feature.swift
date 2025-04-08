@@ -24,10 +24,6 @@ let featureTemplate = Template(
             templatePath: "FeatureModuleFile.swift"
         ),
         .file(
-            path: "Feature/{{ name }}/Sources/Demo/{{ name }}Demo.swift",
-            templatePath: "FeatureModuleFile.swift"
-        ),
-        .file(
             path: "Feature/{{ name }}/Resources/Assets.xcassets/Contents.json",
             templatePath: "AssetsContents.json"
         ),
