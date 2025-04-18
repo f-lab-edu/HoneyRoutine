@@ -14,7 +14,7 @@ let workspace = Workspace(
         // TODO: 해당 모듈이 추가되면 주석을 해제해야합니다.
         // "Feature/**",
         // "Core/**",
-        // "Domain/**",
+        "Domain/**",
         // "Shared/**"
     ]
 )
