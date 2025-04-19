@@ -14,18 +14,15 @@ let project = Project.makeModule(
     targets: [
         .interface,
         .implementation,
-        .demo,
         .tests,
         .snapshotTests,
         .testing
     ],
     resources: [
-        .implementation: "Resources/**",
-        .demo: "Resources/**"
+        .implementation: "Resources/**"
     ],
     dependencies: [
         .implementation: [.target(name: "{{ name }}Interface")],
-        .demo: [.target(name: "{{ name }}Implementation")],
         .tests: [.target(name: "{{ name }}Implementation")]
     ]
 )
