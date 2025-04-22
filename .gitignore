@@ -19,3 +19,7 @@ graph.dot
 ### Swift ###
 *.dSYM
 *.ipa
+
+### Editor specific files ###
+.vscode/
+buildServer.json
