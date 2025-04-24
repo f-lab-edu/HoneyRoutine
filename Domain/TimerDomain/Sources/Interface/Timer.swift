@@ -1,5 +1,5 @@
 //
-//  TimerEntity.swift
+//  Timer.swift
 //  TimerDomainInterface
 //
 //  Created by JUNHEE JO on 4/23/25.
