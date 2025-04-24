@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct TimerEntity {
+public struct Timer {
     // MARK: - Properties
     public let duration: Int
     public let remainingTime: Int
@@ -26,8 +26,8 @@ public struct TimerEntity {
 
     // MARK: - State Changes
     /// 타이머 시작 상태로 변경
-    public func start() -> TimerEntity {
-        TimerEntity(
+    public func start() -> Timer {
+        Timer(
             duration: self.duration,
             remainingTime: self.remainingTime,
             isRunning: true
@@ -35,8 +35,8 @@ public struct TimerEntity {
     }
 
     /// 타이머 정지 상태로 변경
-    public func stop() -> TimerEntity {
-        TimerEntity(
+    public func stop() -> Timer {
+        Timer(
             duration: self.duration,
             remainingTime: self.remainingTime,
             isRunning: false
@@ -44,9 +44,9 @@ public struct TimerEntity {
     }
 
     /// 남은 시간 업데이트
-    public func updateRemainingTime(_ newTime: Int) -> TimerEntity {
+    public func updateRemainingTime(_ newTime: Int) -> Timer {
         let clampedTime = max(0, min(newTime, duration))
-        return TimerEntity(
+        return Timer(
             duration: self.duration,
             remainingTime: clampedTime,
             isRunning: self.isRunning
@@ -54,8 +54,8 @@ public struct TimerEntity {
     }
 
     /// 타이머 초기화
-    public func reset() -> TimerEntity {
-        TimerEntity(
+    public func reset() -> Timer {
+        Timer(
             duration: self.duration,
             remainingTime: self.duration,
             isRunning: false
@@ -64,11 +64,11 @@ public struct TimerEntity {
 }
 
 // MARK: - Equatable & Hashable
-extension TimerEntity: Equatable {}
-extension TimerEntity: Hashable {}
+extension Timer: Equatable {}
+extension Timer: Hashable {}
 
 // MARK: - Custom String Convertible
-extension TimerEntity: CustomStringConvertible {
+extension Timer: CustomStringConvertible {
     public var description: String {
         "Timer(duration: \(duration)s, remaining: \(remainingTime)s, running: \(isRunning))"
     }
