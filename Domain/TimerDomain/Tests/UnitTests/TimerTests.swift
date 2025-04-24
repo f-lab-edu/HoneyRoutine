@@ -1,5 +1,5 @@
 //
-//  TimerEntityTests.swift
+//  TimerTests.swift
 //  TimerDomainTests
 //
 //  Created by JUNHEE JO on 4/24/25.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import TimerDomainInterface
 
-final class TimerEntityTests: XCTestCase {
+final class TimerTests: XCTestCase {
 
     // MARK: - start()
     func testStart_shouldReturnTimerWithRunningTrue() {
