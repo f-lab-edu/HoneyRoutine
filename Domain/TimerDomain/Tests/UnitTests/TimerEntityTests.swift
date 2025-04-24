@@ -13,7 +13,7 @@ final class TimerEntityTests: XCTestCase {
     // MARK: - start()
     func testStart_shouldReturnTimerWithRunningTrue() {
         // Given
-        let timer = TimerEntity(duration: 60, remainingTime: 30, isRunning: false)
+        let timer = Timer(duration: 60, remainingTime: 30, isRunning: false)
 
         // When
         let started = timer.start()
@@ -27,7 +27,7 @@ final class TimerEntityTests: XCTestCase {
     // MARK: - stop()
     func testStop_shouldReturnTimerWithRunningFalse() {
         // Given
-        let timer = TimerEntity(duration: 60, remainingTime: 10, isRunning: true)
+        let timer = Timer(duration: 60, remainingTime: 10, isRunning: true)
 
         // When
         let stopped = timer.stop()
@@ -40,7 +40,7 @@ final class TimerEntityTests: XCTestCase {
     // MARK: - reset()
     func testReset_shouldReturnTimerWithRemainingTimeEqualsDuration() {
         // Given
-        let timer = TimerEntity(duration: 60, remainingTime: 15, isRunning: true)
+        let timer = Timer(duration: 60, remainingTime: 15, isRunning: true)
 
         // When
         let reset = timer.reset()
@@ -51,7 +51,7 @@ final class TimerEntityTests: XCTestCase {
 
     func testReset_shouldReturnTimerWithRunningFalse() {
         // Given
-        let timer = TimerEntity(duration: 60, remainingTime: 15, isRunning: true)
+        let timer = Timer(duration: 60, remainingTime: 15, isRunning: true)
 
         // When
         let reset = timer.reset()
@@ -63,7 +63,7 @@ final class TimerEntityTests: XCTestCase {
     // MARK: - updateRemainingTime()
     func testUpdateRemainingTime_shouldClampAboveMaxToDuration() {
         // Given
-        let timer = TimerEntity(duration: 60, remainingTime: 30)
+        let timer = Timer(duration: 60, remainingTime: 30)
 
         // When
         let updated = timer.updateRemainingTime(100)
@@ -74,7 +74,7 @@ final class TimerEntityTests: XCTestCase {
 
     func testUpdateRemainingTime_shouldClampBelowMinToZero() {
         // Given
-        let timer = TimerEntity(duration: 60, remainingTime: 30)
+        let timer = Timer(duration: 60, remainingTime: 30)
 
         // When
         let updated = timer.updateRemainingTime(-10)
@@ -85,7 +85,7 @@ final class TimerEntityTests: XCTestCase {
 
     func testUpdateRemainingTime_shouldSetExactValueWithinBounds() {
         // Given
-        let timer = TimerEntity(duration: 60, remainingTime: 30)
+        let timer = Timer(duration: 60, remainingTime: 30)
 
         // When
         let updated = timer.updateRemainingTime(25)
