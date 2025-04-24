@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol TimerRepository {
-    func saveTime(_ timer: Timer)
-    func loadTimer() -> Timer
-    func clearTimer()
+    func save(_ timer: Timer)
+    func load() -> Timer?
+    func clear()
 }
