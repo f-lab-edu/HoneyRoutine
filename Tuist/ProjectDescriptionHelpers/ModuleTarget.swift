@@ -42,17 +42,6 @@ public enum ModuleTarget {
         }
     }
 
-    public func productName(for moduleName: String) -> String? {
-        switch self {
-        case .app, .implementation:
-            return moduleName
-        case .demo:
-            return "\(moduleName)Demo"
-        default:
-            return nil
-        }
-    }
-
     public var sources: SourceFilesList {
         switch self {
         case .app:
