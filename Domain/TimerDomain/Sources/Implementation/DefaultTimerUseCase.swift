@@ -22,6 +22,7 @@ public final class DefaultTimerUseCase: TimerUseCase {
     public var currentTimer: AnyPublisher<TimerDomainInterface.Timer, Never> {
         timerSubject
             .compactMap { $0 }
+            .removeDuplicates()
             .eraseToAnyPublisher()
     }
 
