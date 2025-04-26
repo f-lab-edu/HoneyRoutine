@@ -34,8 +34,8 @@ public struct Timer {
         )
     }
 
-    /// 타이머 정지 상태로 변경
-    public func stop() -> Timer {
+    /// 타이머 일시 정지 상태로 변경
+    public func pause() -> Timer {
         Timer(
             duration: self.duration,
             remainingTime: self.remainingTime,

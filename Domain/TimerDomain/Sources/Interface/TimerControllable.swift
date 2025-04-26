@@ -20,7 +20,7 @@ public protocol TimerControllable {
     func resume(remainingTime: Int)
 
     /// 타이머를 일시 정지합니다.
-    func stop()
+    func pause()
 
     /// 타이머를 초기 상태로 되돌립니다.
     func reset()

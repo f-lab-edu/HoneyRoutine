@@ -68,11 +68,11 @@ public final class DefaultTimerUseCase: TimerUseCase {
             .store(in: &cancellables)
     }
 
-    public func stop() {
-        timerController.stop()
+    public func pause() {
+        timerController.pause()
         guard let currentTimer = timerSubject.value else { return }
-        let stopedTimer = currentTimer.stop()
-        saveAndPublish(stopedTimer)
+        let pausedTimer = currentTimer.pause()
+        saveAndPublish(pausedTimer)
         cancellables.removeAll()
     }
 

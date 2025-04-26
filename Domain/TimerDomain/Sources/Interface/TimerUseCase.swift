@@ -21,7 +21,7 @@ public protocol TimerUseCase {
     func resume()
 
     /// 실행 중인 타이머를 일시 정지합니다.
-    func stop()
+    func pause()
 
     /// 타이머를 초기 상태로 리셋합니다.
     func reset()
