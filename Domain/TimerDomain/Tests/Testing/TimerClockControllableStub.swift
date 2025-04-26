@@ -1,5 +1,5 @@
 //
-//  TimerControllableStub.swift
+//  TimerClockControllableStub.swift
 //  TimerDomainTesting
 //
 //  Created by JUNHEE JO on 4/25/25.
@@ -9,7 +9,7 @@ import Foundation
 import Combine
 @testable import TimerDomainInterface
 
-final class TimerControllableStub: TimerControllable {
+final class TimerClockControllableStub: TimerClockControllable {
     private let subject = PassthroughSubject<Int, Never>()
 
     func emitRemainingTime(_ time: Int) {

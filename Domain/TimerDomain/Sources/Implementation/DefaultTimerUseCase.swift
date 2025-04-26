@@ -12,7 +12,7 @@ import TimerDomainInterface
 public final class DefaultTimerUseCase: TimerUseCase {
     // MARK: - Dependencies
     private let timerStateRepository: TimerStateRepository
-    private let timerController: TimerControllable
+    private let timerController: TimerClockControllable
 
     // MARK: - State
     private let timerStateSubject = CurrentValueSubject<TimerState?, Never>(nil)
@@ -28,7 +28,7 @@ public final class DefaultTimerUseCase: TimerUseCase {
     // MARK: - Init
     public init(
         timerStateRepository: TimerStateRepository,
-        timerController: TimerControllable
+        timerController: TimerClockControllable
     ) {
         self.timerStateRepository = timerStateRepository
         self.timerController = timerController

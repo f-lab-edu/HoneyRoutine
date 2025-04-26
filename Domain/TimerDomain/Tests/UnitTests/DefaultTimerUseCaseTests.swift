@@ -15,13 +15,13 @@ import Combine
 final class DefaultTimerUseCaseTests: XCTestCase {
     private var useCase: DefaultTimerUseCase!
     private var repository: TimerStateRepositoryFake!
-    private var controller: TimerControllableStub!
+    private var controller: TimerClockControllableStub!
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
         repository = TimerStateRepositoryFake()
-        controller = TimerControllableStub()
+        controller = TimerClockControllableStub()
         useCase = DefaultTimerUseCase(
             timerStateRepository: repository,
             timerController: controller
