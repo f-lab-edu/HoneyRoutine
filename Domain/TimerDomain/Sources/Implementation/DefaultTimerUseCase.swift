@@ -10,7 +10,6 @@ import Combine
 import TimerDomainInterface
 
 public final class DefaultTimerUseCase: TimerUseCase {
-
     // MARK: - Dependencies
     private let timerRepository: TimerRepository
     private let timerController: TimerControllable
