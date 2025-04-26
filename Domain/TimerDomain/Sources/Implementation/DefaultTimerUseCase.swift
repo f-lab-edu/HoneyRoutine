@@ -52,6 +52,22 @@ public final class DefaultTimerUseCase: TimerUseCase {
             .store(in: &cancellables)
     }
 
+    public func resume() {
+        guard let current = timerSubject.value else { return }
+        let resumedTimer = current.start()
+        saveAndPublish(resumedTimer)
+
+        timerController.resume(remainingTime: resumedTimer.remainingTime)
+
+        timerController.remainingTime
+            .sink { [weak self] in
+                guard let self, let currentTimer = timerSubject.value else { return }
+                let updated = currentTimer.updateRemainingTime($0)
+                self.saveAndPublish(updated)
+            }
+            .store(in: &cancellables)
+    }
+
     public func stop() {
         timerController.stop()
         guard let currentTimer = timerSubject.value else { return }
