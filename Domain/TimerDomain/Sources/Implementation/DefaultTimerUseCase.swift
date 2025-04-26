@@ -37,9 +37,9 @@ public final class DefaultTimerUseCase: TimerUseCase {
 
     // MARK: - UseCase Methods
     public func start(duration: Int) {
-        let timer = Timer(duration: duration)
+        let startedTimer = Timer(duration: duration).start()
 
-        saveAndPublish(timer)
+        saveAndPublish(startedTimer)
         timerController.start(duration: duration)
 
         timerController.remainingTime
@@ -54,12 +54,16 @@ public final class DefaultTimerUseCase: TimerUseCase {
 
     public func stop() {
         timerController.stop()
+        guard let currentTimer = timerSubject.value else { return }
+        let stopedTimer = currentTimer.stop()
+        saveAndPublish(stopedTimer)
     }
 
     public func reset() {
         timerController.reset()
-        guard let resetTimer = timerSubject.value?.reset() else { return }
-        saveAndPublish(resetTimer)
+        guard let currentTimer = timerSubject.value else { return }
+        let resetedTimer = currentTimer.reset()
+        saveAndPublish(resetedTimer)
     }
 
     // MARK: - Private Methods
