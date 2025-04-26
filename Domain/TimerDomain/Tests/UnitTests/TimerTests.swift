@@ -23,13 +23,13 @@ final class TimerTests: XCTestCase {
         XCTAssertEqual(timer.remainingTime, 30)
     }
 
-    // MARK: - stop()
+    // MARK: - pause()
     func testPause_shouldReturnTimerWithRunningFalse() {
         // Given
         var timer = Timer(duration: 60, remainingTime: 10, isRunning: true)
 
         // When
-        timer.stop()
+        timer.pause()
 
         // Then
         XCTAssertFalse(timer.isRunning)
@@ -40,7 +40,7 @@ final class TimerTests: XCTestCase {
         var timer = Timer(duration: 60, remainingTime: 10, isRunning: true)
 
         // When
-        timer.stop()
+        timer.pause()
 
         // Then
         XCTAssertEqual(timer.remainingTime, 10)
