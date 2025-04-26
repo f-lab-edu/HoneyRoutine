@@ -38,7 +38,7 @@ final class DefaultTimerUseCaseTests: XCTestCase {
     }
 
     // MARK: - start()
-    func testStart_shouldStreamInitialRunningTimerState() {
+    func testStart_shouldStreamInitialActiveTimerState() {
         // Given
         let expectation = expectation(description: "should receive initial started timerState")
         var received: TimerState?
@@ -57,7 +57,7 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
         XCTAssertEqual(received!.duration, 60)
         XCTAssertEqual(received!.remainingTime, 60)
-        XCTAssertTrue(received!.isRunning)
+        XCTAssertEqual(received!.phase, .active)
     }
 
     // MARK: - remainingTime update
@@ -115,10 +115,10 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
 
         XCTAssertEqual(results, [
-            TimerState(duration: 60, remainingTime: 58, isRunning: false),
-            TimerState(duration: 60, remainingTime: 58, isRunning: true),
-            TimerState(duration: 60, remainingTime: 57, isRunning: true),
-            TimerState(duration: 60, remainingTime: 56, isRunning: true)
+            TimerState(duration: 60, remainingTime: 58, phase: .paused),
+            TimerState(duration: 60, remainingTime: 58, phase: .active),
+            TimerState(duration: 60, remainingTime: 57, phase: .active),
+            TimerState(duration: 60, remainingTime: 56, phase: .active)
         ])
     }
 
@@ -133,7 +133,7 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         useCase.currentTimerState
             .sink {
                 received = $0
-                if !$0.isRunning {
+                if $0.phase == .paused {
                     expectation.fulfill()
                 }
             }
@@ -145,7 +145,7 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         // Then
         wait(for: [expectation], timeout: 1.0)
         XCTAssertEqual(received!.duration, 60)
-        XCTAssertFalse(received!.isRunning)
+        XCTAssertEqual(received!.phase, .paused)
     }
     
     func testPause_shouldPreventFurtherTimeUpdates() {
@@ -164,15 +164,15 @@ final class DefaultTimerUseCaseTests: XCTestCase {
 
         controller.emitRemainingTime(59)
         useCase.pause()
-        controller.emitRemainingTime(58)// 이 값은 무시되어야 함
-        controller.emitRemainingTime(57)// 이 값은 무시되어야 함
+        controller.emitRemainingTime(58) // 이 값은 무시되어야 함
+        controller.emitRemainingTime(57) // 이 값은 무시되어야 함
 
         // Then
         wait(for: [expectation], timeout: 1.0)
         XCTAssertEqual(results, [
-            TimerState(duration: 60, remainingTime: 60, isRunning: true),
-            TimerState(duration: 60, remainingTime: 59, isRunning: true),
-            TimerState(duration: 60, remainingTime: 59, isRunning: false)
+            TimerState(duration: 60, remainingTime: 60, phase: .active),
+            TimerState(duration: 60, remainingTime: 59, phase: .active),
+            TimerState(duration: 60, remainingTime: 59, phase: .paused)
         ])
     }
 
@@ -188,7 +188,7 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         useCase.currentTimerState
             .sink {
                 latest = $0
-                if $0.remainingTime == 60 && !$0.isRunning {
+                if $0.remainingTime == 60 && $0.phase == .ready {
                     expectation.fulfill()
                 }
             }
@@ -200,6 +200,6 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         // Then
         wait(for: [expectation], timeout: 1.0)
         XCTAssertEqual(latest!.remainingTime, 60)
-        XCTAssertFalse(latest!.isRunning)
+        XCTAssertEqual(latest!.phase, .ready)
     }
 }
