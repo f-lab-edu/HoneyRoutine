@@ -17,6 +17,9 @@ public protocol TimerUseCase {
     /// - Parameter duration: 타이머의 전체 실행 시간 (초)
     func start(duration: Int)
 
+    /// 일시 정지된 타이머를 다시 실행합니다.
+    func resume()
+
     /// 실행 중인 타이머를 일시 정지합니다.
     func stop()
 
