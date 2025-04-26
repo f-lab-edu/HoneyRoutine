@@ -9,7 +9,6 @@ import XCTest
 @testable import TimerDomainInterface
 
 final class TimerTests: XCTestCase {
-
     // MARK: - start()
     func testStart_shouldReturnTimerWithRunningTrue() {
         // Given
@@ -25,7 +24,7 @@ final class TimerTests: XCTestCase {
     }
 
     // MARK: - stop()
-    func testStop_shouldReturnTimerWithRunningFalse() {
+    func testPause_shouldReturnTimerWithRunningFalse() {
         // Given
         let timer = Timer(duration: 60, remainingTime: 10, isRunning: true)
 
@@ -34,6 +33,16 @@ final class TimerTests: XCTestCase {
 
         // Then
         XCTAssertFalse(stopped.isRunning)
+    }
+
+    func testPause_shouldPreserveRemainingTime() {
+        // Given
+        let timer = Timer(duration: 60, remainingTime: 10, isRunning: true)
+
+        // When
+        let stopped = timer.stop()
+
+        // Then
         XCTAssertEqual(stopped.remainingTime, 10)
     }
 
