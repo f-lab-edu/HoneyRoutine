@@ -11,7 +11,7 @@ import Combine
 /// 타이머의 실행 흐름을 제어하고 현재 상태를 스트리밍하는 UseCase 프로토콜입니다.
 public protocol TimerUseCase {
     /// 현재 타이머 상태를 Combine Publisher로 스트리밍합니다.
-    var currentTimer: AnyPublisher<Timer, Never> { get }
+    var currentTimerState: AnyPublisher<TimerState, Never> { get }
 
     /// 타이머를 처음부터 시작합니다.
     /// - Parameter duration: 타이머의 전체 실행 시간 (초)

@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-/// 타이머의 실행 상태를 제어하고 남은 시간을 외부에 스트리밍할 수 있도록 추상화한 프로토콜입니다.
+/// 타이머의 시간을 제어하고 남은 시간을 외부에 스트리밍하는 객체 프로토콜입니다.
 public protocol TimerControllable {
     /// 타이머를 처음부터 시작합니다.
     /// - Parameter duration: 타이머 전체 실행 시간(초)

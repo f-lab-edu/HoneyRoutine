@@ -1,5 +1,5 @@
 //
-//  TimerTests.swift
+//  TimerStateTests.swift
 //  TimerDomainTests
 //
 //  Created by JUNHEE JO on 4/24/25.
@@ -8,14 +8,14 @@
 import XCTest
 @testable import TimerDomainInterface
 
-final class TimerTests: XCTestCase {
+final class TimerStateTests: XCTestCase {
     // MARK: - start()
-    func testStart_shouldReturnTimerWithRunningTrue() {
+    func testStart_shouldReturnTimerStateWithRunningTrue() {
         // Given
-        let timer = Timer(duration: 60, remainingTime: 30, isRunning: false)
+        let timerState = TimerState(duration: 60, remainingTime: 30, isRunning: false)
 
         // When
-        let started = timer.start()
+        let started = timerState.start()
 
         // Then
         XCTAssertTrue(started.isRunning)
@@ -24,12 +24,12 @@ final class TimerTests: XCTestCase {
     }
 
     // MARK: - pause()
-    func testPause_shouldReturnTimerWithRunningFalse() {
+    func testPause_shouldReturnTimerStateWithRunningFalse() {
         // Given
-        let timer = Timer(duration: 60, remainingTime: 10, isRunning: true)
+        let timerState = TimerState(duration: 60, remainingTime: 10, isRunning: true)
 
         // When
-        let paused = timer.pause()
+        let paused = timerState.pause()
 
         // Then
         XCTAssertFalse(paused.isRunning)
@@ -37,33 +37,33 @@ final class TimerTests: XCTestCase {
 
     func testPause_shouldPreserveRemainingTime() {
         // Given
-        let timer = Timer(duration: 60, remainingTime: 10, isRunning: true)
+        let timerState = TimerState(duration: 60, remainingTime: 10, isRunning: true)
 
         // When
-        let stopped = timer.pause()
+        let stopped = timerState.pause()
 
         // Then
         XCTAssertEqual(stopped.remainingTime, 10)
     }
 
     // MARK: - reset()
-    func testReset_shouldReturnTimerWithRemainingTimeEqualsDuration() {
+    func testReset_shouldReturnTimerStateWithRemainingTimeEqualsDuration() {
         // Given
-        let timer = Timer(duration: 60, remainingTime: 15, isRunning: true)
+        let timerState = TimerState(duration: 60, remainingTime: 15, isRunning: true)
 
         // When
-        let reset = timer.reset()
+        let reset = timerState.reset()
 
         // Then
         XCTAssertEqual(reset.remainingTime, 60)
     }
 
-    func testReset_shouldReturnTimerWithRunningFalse() {
+    func testReset_shouldReturnTimerStateWithRunningFalse() {
         // Given
-        let timer = Timer(duration: 60, remainingTime: 15, isRunning: true)
+        let timerState = TimerState(duration: 60, remainingTime: 15, isRunning: true)
 
         // When
-        let reset = timer.reset()
+        let reset = timerState.reset()
 
         // Then
         XCTAssertFalse(reset.isRunning)
@@ -72,10 +72,10 @@ final class TimerTests: XCTestCase {
     // MARK: - updateRemainingTime()
     func testUpdateRemainingTime_shouldClampAboveMaxToDuration() {
         // Given
-        let timer = Timer(duration: 60, remainingTime: 30)
+        let timerState = TimerState(duration: 60, remainingTime: 30)
 
         // When
-        let updated = timer.updateRemainingTime(100)
+        let updated = timerState.updateRemainingTime(100)
 
         // Then
         XCTAssertEqual(updated.remainingTime, 60)
@@ -83,10 +83,10 @@ final class TimerTests: XCTestCase {
 
     func testUpdateRemainingTime_shouldClampBelowMinToZero() {
         // Given
-        let timer = Timer(duration: 60, remainingTime: 30)
+        let timerState = TimerState(duration: 60, remainingTime: 30)
 
         // When
-        let updated = timer.updateRemainingTime(-10)
+        let updated = timerState.updateRemainingTime(-10)
 
         // Then
         XCTAssertEqual(updated.remainingTime, 0)
@@ -94,10 +94,10 @@ final class TimerTests: XCTestCase {
 
     func testUpdateRemainingTime_shouldSetExactValueWithinBounds() {
         // Given
-        let timer = Timer(duration: 60, remainingTime: 30)
+        let timerState = TimerState(duration: 60, remainingTime: 30)
 
         // When
-        let updated = timer.updateRemainingTime(25)
+        let updated = timerState.updateRemainingTime(25)
 
         // Then
         XCTAssertEqual(updated.remainingTime, 25)

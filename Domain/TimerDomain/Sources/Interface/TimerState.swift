@@ -1,5 +1,5 @@
 //
-//  Timer.swift
+//  TimerState.swift
 //  TimerDomainInterface
 //
 //  Created by JUNHEE JO on 4/23/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Timer {
+public struct TimerState {
     // MARK: - Properties
     public let duration: Int
     public let remainingTime: Int
@@ -25,18 +25,18 @@ public struct Timer {
     }
 
     // MARK: - State Changes
-    /// 타이머 시작 상태로 변경
-    public func start() -> Timer {
-        Timer(
+    /// 타이머 상태를 시작 상태로 변경
+    public func start() -> TimerState {
+        TimerState(
             duration: self.duration,
             remainingTime: self.remainingTime,
             isRunning: true
         )
     }
 
-    /// 타이머 일시 정지 상태로 변경
-    public func pause() -> Timer {
-        Timer(
+    /// 타이머 상태를 일시 정지 상태로 변경
+    public func pause() -> TimerState {
+        TimerState(
             duration: self.duration,
             remainingTime: self.remainingTime,
             isRunning: false
@@ -44,18 +44,18 @@ public struct Timer {
     }
 
     /// 남은 시간 업데이트
-    public func updateRemainingTime(_ newTime: Int) -> Timer {
+    public func updateRemainingTime(_ newTime: Int) -> TimerState {
         let clampedTime = max(0, min(newTime, duration))
-        return Timer(
+        return TimerState(
             duration: self.duration,
             remainingTime: clampedTime,
             isRunning: self.isRunning
         )
     }
 
-    /// 타이머 초기화
-    public func reset() -> Timer {
-        Timer(
+    /// 타이머 상태를 초기화
+    public func reset() -> TimerState {
+        TimerState(
             duration: self.duration,
             remainingTime: self.duration,
             isRunning: false
@@ -64,12 +64,12 @@ public struct Timer {
 }
 
 // MARK: - Equatable & Hashable
-extension Timer: Equatable {}
-extension Timer: Hashable {}
+extension TimerState: Equatable {}
+extension TimerState: Hashable {}
 
 // MARK: - Custom String Convertible
-extension Timer: CustomStringConvertible {
+extension TimerState: CustomStringConvertible {
     public var description: String {
-        "Timer(duration: \(duration)s, remaining: \(remainingTime)s, running: \(isRunning))"
+        "TimerState(duration: \(duration)s, remaining: \(remainingTime)s, running: \(isRunning))"
     }
 }

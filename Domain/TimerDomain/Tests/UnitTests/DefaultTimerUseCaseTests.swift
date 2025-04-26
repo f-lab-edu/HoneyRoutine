@@ -14,16 +14,16 @@ import Combine
 
 final class DefaultTimerUseCaseTests: XCTestCase {
     private var useCase: DefaultTimerUseCase!
-    private var repository: TimerRepositoryFake!
+    private var repository: TimerStateRepositoryFake!
     private var controller: TimerControllableStub!
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
-        repository = TimerRepositoryFake()
+        repository = TimerStateRepositoryFake()
         controller = TimerControllableStub()
         useCase = DefaultTimerUseCase(
-            timerRepository: repository,
+            timerStateRepository: repository,
             timerController: controller
         )
         cancellables = []
@@ -38,12 +38,12 @@ final class DefaultTimerUseCaseTests: XCTestCase {
     }
 
     // MARK: - start()
-    func testStart_shouldStreamInitialRunningTimer() {
+    func testStart_shouldStreamInitialRunningTimerState() {
         // Given
-        let expectation = expectation(description: "should receive initial started timer")
-        var received: TimerDomainInterface.Timer?
+        let expectation = expectation(description: "should receive initial started timerState")
+        var received: TimerState?
 
-        useCase.currentTimer
+        useCase.currentTimerState
             .sink {
                 received = $0
                 expectation.fulfill()
@@ -64,10 +64,10 @@ final class DefaultTimerUseCaseTests: XCTestCase {
     func testRemainingTime_shouldReflectEachTick() {
         // Given
         useCase.start(duration: 60)
-        let expectation = expectation(description: "should receive 3 timer updates")
+        let expectation = expectation(description: "should receive 3 timerState updates")
         var receivedTimes: [Int] = []
 
-        useCase.currentTimer
+        useCase.currentTimerState
             .sink {
                 receivedTimes.append($0.remainingTime)
                 if receivedTimes.count == 4 { // 60, 59, 58, 57
@@ -87,7 +87,7 @@ final class DefaultTimerUseCaseTests: XCTestCase {
     }
 
     // MARK: - resume()
-    func testResume_shouldResumePausedTimerAndContinueTicking() {
+    func testResume_shouldResumePausedTimerStateAndContinueTicking() {
         // Given
         useCase.start(duration: 60)
         controller.emitRemainingTime(59)
@@ -95,9 +95,9 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         useCase.pause()
 
         let expectation = expectation(description: "should receive resumed state and tick")
-        var results: [TimerDomainInterface.Timer] = []
+        var results: [TimerState] = []
 
-        useCase.currentTimer
+        useCase.currentTimerState
             .sink {
                 results.append($0)
                 if results.count == 3 {
@@ -115,10 +115,10 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
 
         XCTAssertEqual(results, [
-            Timer(duration: 60, remainingTime: 58, isRunning: false),
-            Timer(duration: 60, remainingTime: 58, isRunning: true),
-            Timer(duration: 60, remainingTime: 57, isRunning: true),
-            Timer(duration: 60, remainingTime: 56, isRunning: true)
+            TimerState(duration: 60, remainingTime: 58, isRunning: false),
+            TimerState(duration: 60, remainingTime: 58, isRunning: true),
+            TimerState(duration: 60, remainingTime: 57, isRunning: true),
+            TimerState(duration: 60, remainingTime: 56, isRunning: true)
         ])
     }
 
@@ -127,10 +127,10 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         // Given
         useCase.start(duration: 60)
 
-        let expectation = expectation(description: "should emit paused timer")
-        var received: TimerDomainInterface.Timer?
+        let expectation = expectation(description: "should emit paused timerState")
+        var received: TimerState?
 
-        useCase.currentTimer
+        useCase.currentTimerState
             .sink {
                 received = $0
                 if !$0.isRunning {
@@ -152,10 +152,10 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         // Given
         useCase.start(duration: 60)
 
-        var results: [TimerDomainInterface.Timer] = []
+        var results: [TimerState] = []
         let expectation = expectation(description: "should pause updating")
 
-        useCase.currentTimer
+        useCase.currentTimerState
             .sink {
                 results.append($0)
                 if results.count == 2 { expectation.fulfill() }
@@ -170,9 +170,9 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         // Then
         wait(for: [expectation], timeout: 1.0)
         XCTAssertEqual(results, [
-            Timer(duration: 60, remainingTime: 60, isRunning: true),
-            Timer(duration: 60, remainingTime: 59, isRunning: true),
-            Timer(duration: 60, remainingTime: 59, isRunning: false)
+            TimerState(duration: 60, remainingTime: 60, isRunning: true),
+            TimerState(duration: 60, remainingTime: 59, isRunning: true),
+            TimerState(duration: 60, remainingTime: 59, isRunning: false)
         ])
     }
 
@@ -183,9 +183,9 @@ final class DefaultTimerUseCaseTests: XCTestCase {
         controller.emitRemainingTime(10)
 
         let expectation = expectation(description: "should receive reset state")
-        var latest: TimerDomainInterface.Timer?
+        var latest: TimerState?
 
-        useCase.currentTimer
+        useCase.currentTimerState
             .sink {
                 latest = $0
                 if $0.remainingTime == 60 && !$0.isRunning {
