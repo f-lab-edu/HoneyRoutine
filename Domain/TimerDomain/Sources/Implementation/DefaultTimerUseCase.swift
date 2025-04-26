@@ -57,6 +57,7 @@ public final class DefaultTimerUseCase: TimerUseCase {
         guard let currentTimer = timerSubject.value else { return }
         let stopedTimer = currentTimer.stop()
         saveAndPublish(stopedTimer)
+        cancellables.removeAll()
     }
 
     public func reset() {
@@ -64,6 +65,7 @@ public final class DefaultTimerUseCase: TimerUseCase {
         guard let currentTimer = timerSubject.value else { return }
         let resetedTimer = currentTimer.reset()
         saveAndPublish(resetedTimer)
+        cancellables.removeAll()
     }
 
     // MARK: - Private Methods
