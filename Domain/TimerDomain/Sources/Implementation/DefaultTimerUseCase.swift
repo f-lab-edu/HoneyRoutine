@@ -32,58 +32,50 @@ public final class DefaultTimerUseCase: TimerUseCase {
     ) {
         self.timerRepository = timerRepository
         self.timerController = timerController
+        
+        bindRemainingTime()
     }
 
     // MARK: - UseCase Methods
     public func start(duration: Int) {
-        let startedTimer = Timer(duration: duration).start()
-
-        saveAndPublish(startedTimer)
+        var timer = Timer(duration: duration)
+        timer.start()
+        saveAndPublish(timer)
         timerController.start(duration: duration)
-
-        timerController.remainingTime
-            .sink { [weak self] in
-                guard let self else { return }
-                guard let currentTimer = timerSubject.value else { return }
-                let updatedTimer = currentTimer.updateRemainingTime($0)
-                saveAndPublish(updatedTimer)
-            }
-            .store(in: &cancellables)
     }
-
+    
     public func resume() {
-        guard let current = timerSubject.value else { return }
-        let resumedTimer = current.start()
-        saveAndPublish(resumedTimer)
-
-        timerController.resume(remainingTime: resumedTimer.remainingTime)
-
-        timerController.remainingTime
-            .sink { [weak self] in
-                guard let self, let currentTimer = timerSubject.value else { return }
-                let updated = currentTimer.updateRemainingTime($0)
-                self.saveAndPublish(updated)
-            }
-            .store(in: &cancellables)
+        guard var currentTimer = timerSubject.value else { return }
+        currentTimer.start()
+        saveAndPublish(currentTimer)
+        timerController.resume(remainingTime: currentTimer.remainingTime)
     }
 
     public func pause() {
         timerController.pause()
-        guard let currentTimer = timerSubject.value else { return }
-        let pausedTimer = currentTimer.pause()
-        saveAndPublish(pausedTimer)
-        cancellables.removeAll()
+        guard var currentTimer = timerSubject.value else { return }
+        currentTimer.pause()
+        saveAndPublish(currentTimer)
     }
 
     public func reset() {
         timerController.reset()
-        guard let currentTimer = timerSubject.value else { return }
-        let resetedTimer = currentTimer.reset()
-        saveAndPublish(resetedTimer)
-        cancellables.removeAll()
+        guard var currentTimer = timerSubject.value else { return }
+        currentTimer.reset()
+        saveAndPublish(currentTimer)
     }
-
+    
     // MARK: - Private Methods
+    private func bindRemainingTime() {
+        timerController.remainingTime
+            .sink { [weak self] in
+                guard let self, var currentTimer = self.timerSubject.value else { return }
+                currentTimer.updateRemainingTime($0)
+                saveAndPublish(currentTimer)
+            }
+            .store(in: &cancellables)
+    }
+    
     private func saveAndPublish(_ timer: TimerDomainInterface.Timer) {
         timerRepository.save(timer)
         timerSubject.send(timer)
