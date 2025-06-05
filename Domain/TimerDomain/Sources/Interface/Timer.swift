@@ -9,10 +9,10 @@ import Foundation
 
 public struct Timer {
     // MARK: - Properties
-    public let duration: Int
-    public let remainingTime: Int
-    public let isRunning: Bool
-
+    public private(set) var duration: Int
+    public private(set) var remainingTime: Int
+    public private(set) var isRunning: Bool
+    
     // MARK: - Initialization
     public init(
         duration: Int,
@@ -26,40 +26,24 @@ public struct Timer {
 
     // MARK: - State Changes
     /// 타이머 시작 상태로 변경
-    public func start() -> Timer {
-        Timer(
-            duration: self.duration,
-            remainingTime: self.remainingTime,
-            isRunning: true
-        )
+    public mutating func start() {
+        isRunning = true
     }
 
     /// 타이머 정지 상태로 변경
-    public func stop() -> Timer {
-        Timer(
-            duration: self.duration,
-            remainingTime: self.remainingTime,
-            isRunning: false
-        )
+    public mutating func stop() {
+        isRunning = false
     }
 
     /// 남은 시간 업데이트
-    public func updateRemainingTime(_ newTime: Int) -> Timer {
-        let clampedTime = max(0, min(newTime, duration))
-        return Timer(
-            duration: self.duration,
-            remainingTime: clampedTime,
-            isRunning: self.isRunning
-        )
+    public mutating func updateRemainingTime(_ newTime: Int) {
+        remainingTime = max(0, min(newTime, duration))
     }
 
     /// 타이머 초기화
-    public func reset() -> Timer {
-        Timer(
-            duration: self.duration,
-            remainingTime: self.duration,
-            isRunning: false
-        )
+    public mutating func reset() {
+        remainingTime = duration
+        isRunning = false
     }
 }
 
