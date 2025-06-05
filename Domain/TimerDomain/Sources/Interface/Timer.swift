@@ -30,8 +30,8 @@ public struct Timer {
         isRunning = true
     }
 
-    /// 타이머 정지 상태로 변경
-    public mutating func stop() {
+    /// 타이머 일시 정지 상태로 변경
+    public mutating func  pause() {
         isRunning = false
     }
 

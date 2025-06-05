@@ -22,6 +22,12 @@ let project = Project.makeModule(
             .target(name: "TimerDomainInterface")
         ],
         .tests: [
+            .target(name: "TimerDomainInterface"),
+            .target(name: "TimerDomainImplementation"),
+            .target(name: "TimerDomainTesting")
+        ],
+        .testing: [
+            .target(name: "TimerDomainInterface"),
             .target(name: "TimerDomainImplementation")
         ]
     ]

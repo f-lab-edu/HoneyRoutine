@@ -26,7 +26,6 @@ public extension Project {
                 name: "\(name)\(targetType.nameSuffix)",
                 destinations: .iOS,
                 product: targetType.product,
-                productName: targetType.productName(for: name),
                 bundleId: "\(baseBundleId).\(targetType.nameSuffix.lowercased())",
                 deploymentTargets: HoneyRoutineModule.minimumDeploymentTarget,
                 infoPlist: infoPlists[targetType] ?? .default,
